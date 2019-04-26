@@ -106,15 +106,12 @@ def train_step(batch_size=50):
     input_batch = input_batch.float()
 
     output_batch = model(input_batch)
-    print(output_batch[0].shape)
+
     loss = F.cross_entropy(output_batch[0], label_batch[:,0]) \
         + F.cross_entropy(output_batch[1], label_batch[:,1])
     
     pred1 = output_batch[0].data.max(1)[1]
     pred2 = output_batch[1].data.max(1)[1]
-    print(pred1.shape)
-    print(pred1)
-    print(output_batch[0])
     matches = (label_batch[:,0] == pred1) & (label_batch[:,1] == pred2)
     accuracy = matches.float().mean()
     correct_count += matches.sum()
@@ -124,7 +121,7 @@ def train_step(batch_size=50):
     loss.backward()
     optimizer.step()
     
-    #print(pred1)
+
     return loss.data.item(), accuracy
 
 def val():
